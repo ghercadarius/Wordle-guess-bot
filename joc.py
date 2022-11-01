@@ -1,28 +1,27 @@
+import random
 f = open("cuvinte_wordle.txt", "r")
 L=[]
 for x in f:
     x = x.strip()
     L.append(x)
 f.close()
-import random #punem libraria pentru alegerea random
-#print(L[int(random.uniform(0,11453))])
-cuv = L[ int( random.uniform( 0 , 11453 ) ) ] #selectam cuvantul din lista de cuvinte
-print(cuv)
+
+cuv = L[int(random.randint(0, len(L)))]
 gasit=False
-aux=""
 i = 0
-#cele 5 incercari
+print(cuv)
+
 while i < 5:
     aux = input()
     aux = aux.strip()
     aux = aux.upper()
     if len(aux) != 5:
-        print(f"{i} Lungime incorecta")
+        print("Cuvantul trebuie sa aiba 5 litere")
         continue
     if aux not in L:
         print("Cuvantul nu este in lista, incearca altul")
         continue
-    if aux == cuv: #comparam cuvantul citit cu cel ales
+    if aux == cuv:
         print("Gasit")
         gasit = True
         break

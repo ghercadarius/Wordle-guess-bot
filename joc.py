@@ -1,22 +1,33 @@
-s=input()
+f = open("cuvinte_wordle.txt", "r")
 L=[]
-while s != "-1": #citim lista de cuvinte de la tastatura deocamdata
-    L.append(s)
-    s=input()
+for x in f:
+    x = x.strip()
+    L.append(x)
+f.close()
 import random #punem libraria pentru alegerea random
 #print(L[int(random.uniform(0,11453))])
 cuv = L[ int( random.uniform( 0 , 11453 ) ) ] #selectam cuvantul din lista de cuvinte
 print(cuv)
 gasit=False
 aux=""
+i = 0
 #cele 5 incercari
-for i in range( 0 , 5 ):
+while i < 5:
     aux = input()
-    if aux is cuv: #comparam cuvantul citit cu cel ales
-        gasit=True
+    aux = aux.strip()
+    aux = aux.upper()
+    if len(aux) != 5:
+        print(f"{i} Lungime incorecta")
+        continue
+    if aux not in L:
+        print("Cuvantul nu este in lista, incearca altul")
+        continue
+    if aux == cuv: #comparam cuvantul citit cu cel ales
+        print("Gasit")
+        gasit = True
         break
     #verificam literele cuvantului citit sa le comparam cu cuvantul ales
-    for j in range(0,len(aux)):
+    for j in range(len(aux)):
         if aux[j] == cuv[j]: #daca litera este in cuvantul ales si este pe pozitie punem G de la green
             print("G",end='')
         elif aux[j] in cuv: #daca litera este in cuvant dar nu este pe pozitie punem Y de la yellow
@@ -24,7 +35,6 @@ for i in range( 0 , 5 ):
         else: #daca litera nu este deloc punem N
             print("N",end='')
     print("\n")
-if gasit is False:
+    i+=1
+if gasit == False:
     print("Negasit")
-else:
-    print("Gasit")

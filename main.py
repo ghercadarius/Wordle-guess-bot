@@ -2,8 +2,8 @@ import math
 import itertools
 import pickle
 import os
-from scipy.stats import entropy
 from collections import defaultdict
+from scipy.stats import entropy
 
 
 def pattern(guess, word):  #1 = galben, 2 = verde, 0 = gri -> match intre doua cuvinte
@@ -52,7 +52,10 @@ def entropie(words, possible_words, all_patterns, dict):
     for word in words:
         cnt = []
         for pat in all_patterns:
-            return
+            match_list = dict[word][pat]
+            cnt.append(len(match_list))
+        entropies[word] = entropy(cnt)
+    return entropies
 
 
 
@@ -65,15 +68,17 @@ def main():
     for x in f:
         x = x.strip()
         L.append(x)
-        print(x)
     f.close()
+    print(f"Loaded {len(L)} words")
     all_dict = {}
     if 'pattern_dict.p' in os.listdir('.'):
         all_dict = pickle.load(open('pattern_dict.p', 'rb'))
     else:
         all_dict = pattern_dict(L)
         pickle.dump(all_dict, open('pattern_dict.p', 'wb+'))
-    print(all_dict)
+    entr = entropie(L, [], all_pat, all_dict)
+    entropii_sortate = max(entr.items(), key = lambda x: x[1])
+    print(entropii_sortate[0])
 
 if __name__ == '__main__':
     main()
